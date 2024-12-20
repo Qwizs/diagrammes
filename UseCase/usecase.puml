@@ -13,10 +13,10 @@ package "Qwiz" {
   Administrateur -- (Gérer une question)
   Administrateur -- (Démarrer une partie)
 
-  (Gestion de profil) ..> (Connexion) : extend
-  (Gérer un quiz) ..> (Connexion) : extend
-  (Gérer une question) ..> (Connexion) : extend
-  (Démarrer une partie) ..> (Connexion) : extend
+  (Gestion de profil) ..> (Connexion) : include
+  (Gérer un quiz) ..> (Connexion) : include
+  (Gérer une question) ..> (Connexion) : include
+  (Démarrer une partie) ..> (Connexion) : include
 
   (Créer un quiz) --|> (Gérer un quiz) #LightBlue
   (Modifier un quiz) --|> (Gérer un quiz) #LightBlue
