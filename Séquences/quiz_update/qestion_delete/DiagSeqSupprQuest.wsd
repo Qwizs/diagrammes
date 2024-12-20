@@ -1,0 +1,47 @@
+@startuml Suppression qestion
+
+participant Admin
+participant Interface as front
+participant Api
+
+
+
+Admin -> front: Demande de sélection d'un quiz
+activate front
+
+front -> Api: Sélection quiz
+activate Api
+
+Api -> Api: Recherche
+front <- Api: Envoi du quiz et de ses données
+deactivate Api 
+
+Admin <- front: Affichage du contenu du quiz
+deactivate front
+
+Admin -> front: Demande de sélection d'une question
+activate front
+
+front -> Api: Sélection question
+activate Api
+alt Selection question reussie
+    Api -> Api: Recherche question
+    front <- Api: Envoi des données de la question
+    Admin <- front: Affichage des données de la question
+    Admin -> front: Demande de suppression d'une question
+    front -> Api: Suppression question
+    Api -> Api: Suppression question
+    front <- Api: Suppression avec succès
+    Admin <- front: Affichage message succès suppression de la question
+
+else Erreur lors de la selection
+    Api -> Api: Problème détecté
+    front <- Api: Erreur sélection question
+    deactivate Api
+    Admin <- front: Affichage message échec sélection
+
+end
+deactivate front 
+
+
+@enduml
