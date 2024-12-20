@@ -1,0 +1,47 @@
+@startuml
+actor User as U
+participant "Web Interface" as WebInterface
+participant "API" as API
+participant "DataBase" as DB
+participant "Serveur de Jeu" as ServeurDeJeu
+== Connexion au quiz ==
+U -> WebInterface : Saisir la clé d'accès
+WebInterface -> API : Demande de rejoindre le quiz POST(../:clé_d'accès)
+API -> DB : Chercher la clé
+DB -> DB : Vérification de l'existence de la clé
+
+alt clé valide
+  DB --> API : Clé valide
+    API -> WebInterface : Retourner le WebSocket pour le serveur de jeu
+  WebInterface -> ServeurDeJeu : Connexion au serveur de jeu via WebSocket (subscribe au topic)
+
+  ServeurDeJeu -> WebInterface :  Publish : Demander de saisir le pseudo 
+    WebInterface -> U : Demander de saisir le pseudo
+    U -> WebInterface : Saisir le pseudo
+
+    WebInterface -> API : Demande de création d'une sessionId POST(../:pseudo)
+    API -> ServeurDeJeu : Demande de générer une sessionId
+    ServeurDeJeu -> API : Génération d'une sessionId
+
+  API --> WebInterface : Confirmer la connexion et stocker la sessionId dans le navigateur
+else clé invalide
+    DB --> API : Clé Invalide
+    API --> WebInterface : Retourner un message d'erreur
+    WebInterface --> U : Message : Clé invalide. Réessayez.
+end
+== Jouer au quiz ==
+loop Tant que le quiz n'a pas commencé
+  ServeurDeJeu -> WebInterface : Publish : En attente du début du quiz
+  WebInterface --> U : Afficher le message : "En attente du début du quiz"
+end
+
+loop Tant que le quiz n'est pas terminé
+    ServeurDeJeu -> WebInterface : Publish : Nouvelle question
+  WebInterface --> U : Afficher la question
+  U -> WebInterface : Soumettre une réponse
+  WebInterface -> ServeurDeJeu : Transmettre la réponse via WebSocket
+end
+== Fin du quiz ==
+ServeurDeJeu -> WebInterface : Publish : Quiz terminé
+WebInterface --> U : Afficher le message : "Quiz terminé"
+@enduml
