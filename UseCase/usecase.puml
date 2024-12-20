@@ -6,7 +6,6 @@ Actor Administrateur
 
 Utilisateur <|- Administrateur
 
-
 package "Qwiz" {
   Administrateur -- (Gestion de profil)
   Administrateur -- (Gérer un quiz)
