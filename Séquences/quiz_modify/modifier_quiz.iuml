@@ -1,0 +1,22 @@
+@startuml Séance
+title Diagramme de séquences : Modifier un quiz
+
+
+actor Administrateur
+participant Système
+
+activate Administrateur
+activate Système
+activate BD_quiz
+Administrateur -> Système: Cliquer sur "Modifier"
+
+
+Système -> Administrateur: pop_up_forum_quiz()
+Administrateur -> Système: changer_tags
+Administrateur -> Système: cliquer sur enregistrer
+Système -> BD_quiz: save()   
+Système -> Administrateur: liste de quiz mise à jour
+
+deactivate Système
+deactivate Administrateur
+@enduml
