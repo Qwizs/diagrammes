@@ -1,0 +1,33 @@
+@startuml cas-utilisation
+
+left to right direction
+Actor Utilisateur
+Actor Administrateur
+
+Utilisateur <|- Administrateur
+
+
+package "Qwiz" {
+  Administrateur -- (Gestion de profil)
+  Administrateur -- (Gérer un quiz)
+  Administrateur -- (Gérer une question)
+  Administrateur -- (Démarrer une partie)
+
+  (Gestion de profil) ..> (Connexion) : extend
+  (Gérer un quiz) ..> (Connexion) : extend
+  (Gérer une question) ..> (Connexion) : extend
+  (Démarrer une partie) ..> (Connexion) : extend
+
+  (Créer un quiz) --|> (Gérer un quiz) #LightBlue
+  (Modifier un quiz) --|> (Gérer un quiz) #LightBlue
+  (Suppimer un quiz) --|> (Gérer un quiz) #LightBlue
+
+
+  (Créer une question) --|> (Gérer une question) #LightBlue
+  (Modifier une question) --|> (Gérer une question) #LightBlue
+  (Suppimer une question) --|> (Gérer une question) #LightBlue
+
+  Utilisateur -- (Jouer à un quiz)
+  Utilisateur -- (Créer un compte)
+}
+@enduml
