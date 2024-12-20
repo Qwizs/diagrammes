@@ -1,0 +1,38 @@
+@startuml Suppression quiz
+
+participant Admin
+participant Interface as front
+participant Api
+
+Admin -> front: Demande d'accès à la liste des quiz
+activate front
+front -> Api: Demande de la liste des quiz
+
+activate Api
+front <- Api: Envoi liste des quiz
+deactivate Api
+
+Admin <- front: Affichage de la liste
+deactivate front
+
+Admin -> front: Demande de suppression d'un quiz
+activate front
+
+front -> Api: Supprimer quiz
+activate Api
+
+alt Suppression réussie
+    Api -> Api: Suppression
+    front <- Api: Suppression avec succès
+    Admin <- front: Affichage message succès suppression
+else Erreur lors de la suppression
+    Api -> Api: Problème détecté
+    front <- Api: Erreur suppression
+    deactivate Api
+    Admin <- front: Affichage message échec suppression
+
+end
+deactivate front
+
+
+@enduml
