@@ -1,0 +1,77 @@
+@startuml faire-défaire
+hide footbox
+skinparam sequenceMessageAlign center
+
+actor Administrateur as admin
+participant "Interface" as front
+participant "API" as api
+participant "Serveur de jeu" as serveur
+actor "Joueurs" as joueurs
+
+== L'admin sélectionne un quiz ==
+
+admin -> front : sélection d'un quiz
+activate front
+front -> api : demande le quiz
+activate api
+api -->> front : renvoie les informations du quiz
+deactivate api
+front -->> admin : renvoie l'affichage du quiz
+deactivate front
+
+== L'admin démarre le quiz ==
+
+admin -> front : demande le démarrage du quiz
+activate front
+front -> api : demande le démarrage du quiz
+activate api
+api -> serveur : demande la création d'un salon de jeu
+activate serveur
+serveur -->> api : renvoie l'identifiant du salon de jeu
+deactivate serveur
+api -->> front : renvoie l'identifiant du salon de jeu
+deactivate api
+front -->> admin : renvoie l'identifiant du salon de jeu et affiche le serveur est démarré
+deactivate front
+
+== L'admin passe une question ==
+
+admin -> front : demande la prochaine question
+activate front
+front -> api : demande le changement de question
+activate api
+api -> serveur : demande le changement de question
+activate serveur
+serveur -> joueurs : signale la nouvelle question
+serveur -->> api : la question a été changé
+deactivate serveur
+api -->> front : la question a été changé
+deactivate api
+front -->> admin : affiche un message qui signale que la question a été changé
+deactivate front
+
+== L'admin ferme le salon ==
+
+admin -> front : demande la fermeture du salon
+activate front
+front -> api : demande la fermeture du salon
+activate api
+api -> serveur : demande la fermeture du salon
+activate serveur
+serveur -> joueurs : signale la fermeture du salon
+serveur -->> api : le salon est bien fermé
+deactivate serveur
+api -->> front : le salon est bien fermé
+deactivate api
+front -->> admin : affiche un message qui signale que le salon est bien fermé
+deactivate front
+
+@enduml
+
+
+== L'utilisateur refait les actions en boucle ==
+loop Tant qu'il y a des actions à refaire
+    Utilisateur -> redo : appuie sur ctrl y
+    redo -> editor : exécute la dernière action annulée
+    editor -> snapshot : restaure le snapshot précédent
+end
