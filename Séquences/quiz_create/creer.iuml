@@ -1,0 +1,19 @@
+@startuml Séance
+title Diagramme de séquences : Créer un quiz
+
+
+actor Administrateur
+participant Système
+
+activate Administrateur
+activate Système
+Administrateur -> Système: Cliquer sur "Créer un quiz"
+
+
+Système -> Administrateur: Demander tags, nom, categorie
+Administrateur -> Système: Soumettre les données et valider
+Système -> Administrateur: Afficher message de confirmation "Quiz créé"
+
+deactivate Système
+deactivate Administrateur
+@enduml
