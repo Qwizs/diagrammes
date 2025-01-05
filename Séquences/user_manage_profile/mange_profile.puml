@@ -1,0 +1,45 @@
+@startuml
+User -> Interface: Demander affichage des informations du profil
+Interface -> A.P.I: Récupérer données du profil
+A.P.I -> A.P.I: Charger données du profil
+A.P.I -> Interface: Retourner données du profil
+Interface -> User: Afficher informations du profil
+
+alt Modification des informations du profil
+  User -> Interface: Modifier informations (e-mail, mot de passe, etc.)
+  
+  alt Vérification de l'email
+    Interface -> Interface: Vérifier format e-mail
+    alt Format e-mail incorrect
+      User <-- Interface #red: Erreur format e-mail
+    else Format e-mail correct
+      Interface -> A.P.I: Vérifier existence de l'email
+      A.P.I -> A.P.I: Vérifier si e-mail existe déjà
+      alt E-mail existant
+        Interface <-- A.P.I: Erreur existence e-mail
+        User <-- Interface #red: L'email est déjà utilisé
+      else E-mail disponible
+        Interface -> Interface: Vérifier format mot de passe
+        alt Format mot de passe incorrect
+          User <-- Interface #red: Erreur format mot de passe
+        else Format mot de passe correct
+          User -> Interface: Valider modifications
+          Interface -> A.P.I: Envoyer modifications (email, mot de passe, etc.)
+          A.P.I -> A.P.I: Mettre à jour les données
+          A.P.I -> Interface: Confirmer mise à jour
+          Interface -> User: Message de confirmation
+        end
+      end
+    end
+  end
+end
+
+alt Suppression du compte
+  User -> Interface: Demander suppression du compte
+  Interface -> A.P.I: Envoyer demande de suppression
+  A.P.I -> A.P.I: Supprimer données du profil
+  A.P.I -> Interface: Confirmer suppression
+  Interface -> User: Redirection vers page inscription
+  Interface -> User: Message confirmation
+end
+@enduml
