@@ -1,0 +1,50 @@
+@startuml Suppression qestion
+
+participant Admin
+participant Interface as front
+participant Api
+
+Admin -> front: Demande de sélection d'un quiz
+activate front
+
+front -> Api: Sélection quiz
+activate Api
+
+Api -> Api: Recherche
+front <- Api: Envoi du quiz et de ses données
+deactivate Api 
+
+Admin <- front: Affichage du contenu du quiz
+deactivate front
+
+Admin -> front: Demande de création d'une question
+activate front
+
+front -> Api: Demande de création d'une question
+activate Api
+Api -> Api: Initialise la question
+
+
+front <- Api: Envoie la page de création
+deactivate Api
+
+Admin <- front: Affiche la page de création
+deactivate front
+
+Admin -> front: Rentre les informations
+activate front
+
+front -> Api: Envoie les informations
+activate Api
+
+Api -> Api: Traite les informations
+
+front <- Api: Renvoie Status
+deactivate Api
+
+Admin <- front: Renvoie Status
+
+deactivate front 
+
+
+@enduml
