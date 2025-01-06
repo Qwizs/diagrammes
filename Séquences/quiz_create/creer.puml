@@ -1,19 +1,33 @@
-@startuml Séance
-title Diagramme de séquences : Créer un quiz
+@startuml Création quiz
+
+participant Admin
+participant Interface as front
+participant Api
+
+Admin -> front: Clique sur "Créer un quiz"
+
+activate front
+Admin <- front: Demande tags, nom, categorie
+deactivate front
+
+Admin -> front: Envoie les données
+activate front
+
+front -> Api: Créer quiz
+activate Api
+
+alt Création réussie
+    Api -> Api: Création
+    front <- Api: Création faite avec succès
+    Admin <- front: Affichage message succès création
+else Erreur lors de la création
+    Api -> Api: Problème détecté
+    front <- Api: Erreur création
+    deactivate Api
+    Admin <- front: Affichage message échec création
+
+end
+deactivate front
 
 
-actor Administrateur
-participant Système
-
-activate Administrateur
-activate Système
-Administrateur -> Système: Cliquer sur "Créer un quiz"
-
-
-Système -> Administrateur: Demander tags, nom, categorie
-Administrateur -> Système: Soumettre les données et valider
-Système -> Administrateur: Afficher message de confirmation "Quiz créé"
-
-deactivate Système
-deactivate Administrateur
 @enduml
