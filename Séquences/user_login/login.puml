@@ -1,0 +1,18 @@
+@startuml
+User -> Interface: Entrer Adresse e-mail
+User -> Interface: Entrer Mot de passe
+Interface -> Interface: Vérifier format e-mail
+alt Format adresse e-mail incorrect
+  User <-- Interface #red: Erreur format e-mail
+else Format adresse e-mail correct
+  Interface -> A.P.I: Vérifier e-mail et mot de passe
+  A.P.I -> A.P.I: Validation des informations
+  alt E-mail ou mot de passe incorrect
+    Interface <-- A.P.I: Message d'erreur
+    Interface -> User: E-mail ou mot de passe incorrect
+  else Informations correctes
+    A.P.I -> Interface: Connexion validée
+    Interface -> User: Redirection vers page principale
+  end
+end
+@enduml

@@ -1,0 +1,27 @@
+@startuml
+User -> Interface: Entre Nom Prénom
+User -> Interface : Entre Adresse e-mail
+Interface -> Interface : Vérifier format e-mail
+alt Format adresse-mail incorrect
+    User <-- Interface #red : Erreur format e-mail
+else Format adresse e-mail correct
+    Interface -> A.P.I : Envoyer e-mail
+    A.P.I -> A.P.I : Vérifier existence e-mail
+    alt E-mail existante
+        Interface <-- A.P.I : Erreur existence e-mail
+        Interface --> User : Message erreur existence e-mail
+    else E-mail inexistante
+        User -> Interface : Entrer mot de passe
+        Interface -> Interface : Vérifie format mot de passe
+        alt Format mot de passe incorrect
+            User <-- Interface: Message d'erreur
+        else Format mot de passe correct
+            User -> Interface : Valide informations
+            Interface -> A.P.I : Création compte
+            A.P.I -> Interface : Valider création compte
+            Interface -> User : Message de validation
+        end
+    end
+
+end
+@enduml
