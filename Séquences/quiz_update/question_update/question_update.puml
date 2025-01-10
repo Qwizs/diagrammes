@@ -1,0 +1,47 @@
+@startuml Suppression qestion
+
+participant Aministrator as Admin
+participant Interface as front
+participant API
+
+
+Admin -> front: Sélectionne quizz
+activate front
+
+front -> API: Recuperer données quizz
+activate API
+
+API -> API: Charger données quizz
+front <- API: Renvoyer données quizz
+deactivate API 
+
+Admin <- front: Affichage données quiz
+deactivate front
+
+Admin -> front: Sélectionne une question
+activate front
+
+front -> API: Recuperer données question
+activate API
+
+API -> API: Obtenir données question
+front <- API: Renvoyer données question
+deactivate API 
+
+Admin <- front: Affichage données question
+deactivate front
+
+Admin -> front: Modifie données question
+activate front
+
+front -> API: Envoyer nouvelle données
+activate API
+
+API -> API: Mettre à jour données question
+
+front <- API: Confirmer modification
+deactivate API 
+
+Admin <- front: Message confirmation
+deactivate front
+@enduml

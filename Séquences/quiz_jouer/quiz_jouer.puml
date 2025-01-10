@@ -1,18 +1,15 @@
 @startuml
 actor User as U
-participant "Web Interface" as WebInterface
+participant "Interface" as WebInterface
 participant "API" as API
-participant "DataBase" as DB
 participant "Serveur de Jeu" as ServeurDeJeu
 == Connexion au quiz ==
 U -> WebInterface : Saisir la clé d'accès
 WebInterface -> API : Demande de rejoindre le quiz POST(../:clé_d'accès)
-API -> DB : Chercher la clé
-DB -> DB : Vérification de l'existence de la clé
+API -> API : Vérification de la clé
 
 alt clé valide
-  DB --> API : Clé valide
-    API -> WebInterface : Retourner le WebSocket pour le serveur de jeu
+  API -> WebInterface : Retourner le WebSocket pour le serveur de jeu
   WebInterface -> ServeurDeJeu : Connexion au serveur de jeu via WebSocket (subscribe au topic)
 
   ServeurDeJeu -> WebInterface :  Publish : Demander de saisir le pseudo 
@@ -25,7 +22,6 @@ alt clé valide
 
   API --> WebInterface : Confirmer la connexion et stocker la sessionId dans le navigateur
 else clé invalide
-    DB --> API : Clé Invalide
     API --> WebInterface : Retourner un message d'erreur
     WebInterface --> U : Message : Clé invalide. Réessayez.
 end
