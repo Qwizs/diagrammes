@@ -1,28 +1,26 @@
 @startuml Class 
 
 
-class Serveur{
-    -joueurs : Joueur[]
-    -quiz : Quiz[]
-    -quizz_actuel : int
+class Server{
+    - players: Player[]
+    -quiz : Quiz
+    -currentQuestion: Question
     -admin : Admin
 
     +login()
     +logout()
-    +send()
-    +receive()
-    +listener()
-
-    +init()  
+    +sendQuestionWithAnswers()
+    +receiveAnswers(?)
+    +Server()  
     +startQuiz()
     +endQuiz()
     +pauseQuiz()
     +skipQuestion()
-    +getCode()
-    +getScoreFromRep()
+    +getAccessCode()
+    
 }
 
-class Joueur {
+class Player {
     -name : String
     -score : int
 }
@@ -49,14 +47,15 @@ class Quiz{
 
 abstract class Question{
     -Answers : Answer[]
+    -score : int
     +createAnswer()
     +deleteAnswer()
     +updateAnswer()
+    +getScoreFromAnswer(Answer[]) : int
 }
 
 abstract class Answer{
-    -score : int
-    +isValid()
+    
 }
 
 class InputQuestion{
@@ -88,12 +87,12 @@ class SelectAnswer{
 
 
 
-Serveur "1  "--"n " Admin
-Serveur "1"--"0..n" Quiz
-Serveur *-right- Joueur
+Server "1  "--"n " Admin
+Server "1"--"0..n" Quiz
+Server *-right- Player
 Admin -l- TokenManager
 Admin "n"--"1..n" Quiz
-Quiz *-right- Question
+Quiz *- Question
 Question *-right- Answer
 
 
