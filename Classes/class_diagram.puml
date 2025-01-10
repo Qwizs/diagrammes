@@ -1,0 +1,35 @@
+@startuml
+
+class Buffer {
+    -String text
+    +void addText(String newText)
+    +void deleteText(int start, int end)
+    +String getText(int start, int end)
+}
+
+class Selection {
+    -int start
+    -int end
+    +void setSelection(int start, int end)
+    +int getStart()
+    +int getEnd()
+}
+
+class Clipboard {
+    -String clipboardContent
+    +void copy(String text)
+    +String paste()
+}
+
+class UserAction {
+    +void copy(Buffer buffer, Selection selection, Clipboard clipboard)
+    +void cut(Buffer buffer, Selection selection, Clipboard clipboard)
+    +void paste(Buffer buffer, Selection selection, Clipboard clipboard)
+}
+
+Buffer "1" -- "1" Selection : contient
+Buffer "1" -- "1" Clipboard : interargit
+UserAction "1" -- "*" Buffer : modifie
+UserAction "1" -- "1" Selection : référence
+UserAction "1" -- "1" Clipboard : utilise
+@enduml
