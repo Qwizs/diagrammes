@@ -1,0 +1,109 @@
+@startuml Class 
+
+
+class Serveur{
+    -joueurs : Joueur[]
+    -quiz : Quiz[]
+    -quizz_actuel : int
+    -admin : Admin
+
+    +login()
+    +logout()
+    +send()
+    +receive()
+    +listener()
+
+    +init()  
+    +startQuiz()
+    +endQuiz()
+    +pauseQuiz()
+    +skipQuestion()
+    +getCode()
+    +getScoreFromRep()
+}
+
+class Joueur {
+    -name : String
+    -score : int
+}
+
+class TokenManager {
+    -admin: Admin
+    +login()
+    +logout()
+}
+
+class Admin{
+    +createQuiz()
+    +deleteQuiz()
+    +updateQuiz()
+    +deleteProfile()
+} 
+
+class Quiz{
+    -questions : Question[]
+    +createQuestion()
+    +deleteQuestion()
+    +updateQuestion()
+}
+
+abstract class Question{
+    -Answers : Answer[]
+    +createAnswer()
+    +deleteAnswer()
+    +updateAnswer()
+}
+
+abstract class Answer{
+    -score : int
+    +isValid()
+}
+
+class InputQuestion{
+    
+}
+
+class OrderQuestion{
+    
+}
+
+class SelectQuestion{
+    
+}
+
+
+class InputAnswer{
+    
+}
+
+class OrderAnswer{
+    
+}
+
+class SelectAnswer{
+    
+}
+
+
+
+
+
+Serveur "1  "--"n " Admin
+Serveur "1"--"0..n" Quiz
+Serveur *-right- Joueur
+Admin -l- TokenManager
+Admin "n"--"1..n" Quiz
+Quiz *-right- Question
+Question *-right- Answer
+
+
+
+Question <|-- InputQuestion
+Question <|-- OrderQuestion
+Question <|-- SelectQuestion
+
+Answer <|-- InputAnswer
+Answer <|-- OrderAnswer
+Answer <|-- SelectAnswer
+
+@enduml
