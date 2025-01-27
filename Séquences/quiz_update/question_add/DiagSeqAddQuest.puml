@@ -17,24 +17,24 @@ deactivate Api
 Admin <- front: Affichage du contenu du quiz
 deactivate front
 
-Admin -> front: Demande de création d'une question
+Admin -> front: Demande d'ajout d'une question
 activate front
 
-front -> Api: Demande de création d'une question
+front -> Api: Demande d'ajout d'une question
 activate Api
 Api -> Api: Initialise la question
 
 
-front <- Api: Envoie la page de création
+front <- Api: Envoie la page de l'ajout d'une nouvelle question
 deactivate Api
 
-Admin <- front: Affiche la page de création
+Admin <- front: Affiche la page de l'ajout d'une nouvelle question
 deactivate front
 
-Admin -> front: Rentre les informations
+Admin -> front: Saisir les informations
 activate front
 
-front -> Api: Envoie les informations
+front -> Api: Saisir les informations
 activate Api
 
 Api -> Api: Traite les informations
